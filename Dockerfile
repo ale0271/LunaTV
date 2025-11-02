@@ -26,7 +26,8 @@ COPY . .
 ENV DOCKER_ENV=true
 
 # 生成生产构建
-RUN pnpm run build
+# 修复：为 Node.js 进程设置最大旧空间大小，防止在低内存环境中编译失败
+RUN pnpm run build --max-old-space-size=1024
 
 # ---- 第 3 阶段：生成运行时镜像 ----
 FROM node:20-alpine AS runner
