@@ -27,8 +27,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Define Image Name
-        id: image_name
-        run: echo "IMAGE_NAME=ghcr.io/${{ github.repository }}/lunatv:armv7" >> $GITHUB_OUTPUT
+            id: image_name
+            # 使用 | lower 表达式，将 github.repository (例如 ale0271/LunaTV) 强制转换为小写 (ale0271/lunatv)
+            run: |
+              REPO_LOWER=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')
+              echo "IMAGE_NAME=ghcr.io/${REPO_LOWER}/lunatv:armv7" >> $GITHUB_OUTPUT
 
       - name: Build and push ARMv7 Image
         uses: docker/build-push-action@v5
